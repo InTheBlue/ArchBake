@@ -36,4 +36,3 @@ if __name__ == "__main__":
 	#Prerequisites are all present, get arch-install-scripts from git
 	if os.path.isdir("arch-install-scripts") != True:
 		run("git clone git://github.com/falconindy/arch-install-scripts.git")
-		

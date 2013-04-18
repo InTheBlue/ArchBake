@@ -26,13 +26,16 @@ def sudo_run(cmd):
 if __name__ == "__main__":
 	#Begin by testing if pre-requisites are installed
 	arguments = docopt(__doc__)
-	prereqs = ["git"]
+	prereqs = ["git","losetup -V","mkfs.ext4 -V","sudo parted -v"]
 	for prereq in prereqs:
 		try:
-			subprocess.call([prereq],stdout=subprocess.PIPE)
+			subprocess.call([prereq],stdout=subprocess.PIPE,shell=True)
 		except FileNotFoundError:
 			print("{0} isn't installed. ArchBake needs {0} to function".format(prereq))
 			sys.exit(1)
 	#Prerequisites are all present, get arch-install-scripts from git
 	if os.path.isdir("arch-install-scripts") != True:
 		run("git clone git://github.com/falconindy/arch-install-scripts.git")
+	run("truncate -s 5G Arch.img")
+	run("mkfs.ext4 -F Arch.img")
+	run("losetup -f Arch.img")
